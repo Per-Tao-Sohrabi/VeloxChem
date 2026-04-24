@@ -158,3 +158,5 @@ ConfigMKL.hpp
 /compile_commands.json
 
 veloxchem.sh
+
+tempfiles
