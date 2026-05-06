@@ -1,0 +1,3908 @@
+{
+    "quantum_subsystems": [
+        {
+            "nuclei": [
+                {
+                    "index": 1,
+                    "element": "Cl",
+                    "charge": 17.0,
+                    "coordinate": [
+                        6.81575620524567,
+                        6.3850533266167,
+                        10.391957324203977
+                    ]
+                },
+                {
+                    "index": 2,
+                    "element": "Na",
+                    "charge": 11.0,
+                    "coordinate": [
+                        10.2248219466435,
+                        10.294897139826336,
+                        9.169304831546627
+                    ]
+                },
+                {
+                    "index": 3,
+                    "element": "Cl",
+                    "charge": 17.0,
+                    "coordinate": [
+                        7.951481288961502,
+                        13.42239337147067,
+                        12.837263210610315
+                    ]
+                },
+                {
+                    "index": 4,
+                    "element": "Na",
+                    "charge": 11.0,
+                    "coordinate": [
+                        11.360547030359331,
+                        11.598807372857479,
+                        16.50333109942367
+                    ]
+                }
+            ]
+        }
+    ],
+    "classical_subsystems": [
+        {
+            "classical_fragments": [
+                {
+                    "index": 1,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 1,
+                            "element": "Na",
+                            "coordinate": [
+                                17.041064532261167,
+                                0.9124070161224375,
+                                21.39394283567365
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                1
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 2,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 2,
+                            "element": "Cl",
+                            "coordinate": [
+                                18.17916531889991,
+                                7.951100148134038,
+                                0.6109730225311317
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                2
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 3,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 3,
+                            "element": "Na",
+                            "coordinate": [
+                                17.041064532261167,
+                                6.645836078237024,
+                                16.503331625142156
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                3
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 4,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 4,
+                            "element": "Cl",
+                            "coordinate": [
+                                14.769611840734868,
+                                9.773332814492674,
+                                20.171291922766898
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                4
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 5,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 5,
+                            "element": "Na",
+                            "coordinate": [
+                                18.17867965928588,
+                                7.949747104228806,
+                                23.83925033066552
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                5
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 6,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 6,
+                            "element": "Cl",
+                            "coordinate": [
+                                19.31440506018597,
+                                14.98708530260905,
+                                3.0560405223051754
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                6
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 7,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 7,
+                            "element": "Na",
+                            "coordinate": [
+                                17.041064532261167,
+                                12.379265140351611,
+                                11.614610140735289
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                7
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 8,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 8,
+                            "element": "Cl",
+                            "coordinate": [
+                                14.769611840734868,
+                                15.508649713005761,
+                                15.280678822509284
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                8
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 9,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 9,
+                            "element": "Na",
+                            "coordinate": [
+                                18.17867965928588,
+                                13.683176166343392,
+                                18.948637230407904
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                9
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 10,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 10,
+                            "element": "Cl",
+                            "coordinate": [
+                                15.90533913136108,
+                                16.810671012872916,
+                                22.616595638306524
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                10
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 11,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 11,
+                            "element": "Na",
+                            "coordinate": [
+                                17.041064532261167,
+                                18.114583928590825,
+                                6.723998930203796
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                11
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 12,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 12,
+                            "element": "Cl",
+                            "coordinate": [
+                                14.769611840734868,
+                                21.242080664846473,
+                                10.391957338102415
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                12
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 13,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 13,
+                            "element": "Na",
+                            "coordinate": [
+                                18.17867965928588,
+                                19.418494954582606,
+                                14.059915746001035
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                13
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 14,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 14,
+                            "element": "Cl",
+                            "coordinate": [
+                                19.31440506018597,
+                                -2.216979446257838,
+                                17.72598442777503
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                14
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 15,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 15,
+                            "element": "Na",
+                            "coordinate": [
+                                -5.683377775977749,
+                                20.721207894211375,
+                                21.39394283567365
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                15
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 16,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 16,
+                            "element": "Cl",
+                            "coordinate": [
+                                23.859682049524974,
+                                2.9981298652160184,
+                                0.6109730225311317
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                16
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 17,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 17,
+                            "element": "Na",
+                            "coordinate": [
+                                17.04057887264714,
+                                23.848704630467026,
+                                1.833387719672302
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                17
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 18,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 18,
+                            "element": "Cl",
+                            "coordinate": [
+                                18.17867776955976,
+                                2.214428315989593,
+                                5.501346127570922
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                18
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 19,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 19,
+                            "element": "Na",
+                            "coordinate": [
+                                21.585855861986147,
+                                0.39084260572572493,
+                                9.169304535469541
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                19
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 20,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 20,
+                            "element": "Cl",
+                            "coordinate": [
+                                19.31440506018597,
+                                3.518339341981375,
+                                12.837262943368161
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                20
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 21,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 21,
+                            "element": "Na",
+                            "coordinate": [
+                                -2.2738261875388304,
+                                1.6928639055928805,
+                                16.503331625142156
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                21
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 22,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 22,
+                            "element": "Cl",
+                            "coordinate": [
+                                20.450130461086054,
+                                4.820360641848531,
+                                20.171291922766898
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                22
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 23,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 23,
+                            "element": "Na",
+                            "coordinate": [
+                                -1.136211060514117,
+                                2.996774931584662,
+                                23.83925033066552
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                23
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 24,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 24,
+                            "element": "Cl",
+                            "coordinate": [
+                                -0.00048565961402882295,
+                                10.034115019691031,
+                                3.0560405223051754
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                24
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 25,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 25,
+                            "element": "Na",
+                            "coordinate": [
+                                21.585855861986147,
+                                6.124271667840312,
+                                4.278693324938049
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                25
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 26,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 26,
+                            "element": "Cl",
+                            "coordinate": [
+                                19.31440506018597,
+                                9.251768404095962,
+                                7.946651732836668
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                26
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 27,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 27,
+                            "element": "Na",
+                            "coordinate": [
+                                -2.2738261875388304,
+                                7.428182693832094,
+                                11.614610140735289
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                27
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 28,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 28,
+                            "element": "Cl",
+                            "coordinate": [
+                                20.450130461086054,
+                                10.555677540361618,
+                                15.280678822509284
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                28
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 29,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 29,
+                            "element": "Na",
+                            "coordinate": [
+                                -1.136211060514117,
+                                8.730203993699249,
+                                18.948637230407904
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                29
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 30,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 30,
+                            "element": "Cl",
+                            "coordinate": [
+                                -3.4095515884389185,
+                                11.859590456079525,
+                                22.616595638306524
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                30
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 31,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 31,
+                            "element": "Na",
+                            "coordinate": [
+                                -2.2738261875388304,
+                                13.16161175594668,
+                                6.723998930203796
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                31
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 32,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 32,
+                            "element": "Cl",
+                            "coordinate": [
+                                20.450130461086054,
+                                16.289106602476203,
+                                10.391957338102415
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                32
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 33,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 33,
+                            "element": "Na",
+                            "coordinate": [
+                                -1.136211060514117,
+                                14.465520892212336,
+                                14.059915746001035
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                33
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 34,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 34,
+                            "element": "Cl",
+                            "coordinate": [
+                                -3.4095515884389185,
+                                17.59301951819411,
+                                17.72598442777503
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                34
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 35,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 35,
+                            "element": "Na",
+                            "coordinate": [
+                                -0.00048565961402882295,
+                                15.769433807930243,
+                                21.39394283567365
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                35
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 36,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 36,
+                            "element": "Cl",
+                            "coordinate": [
+                                1.135725400900088,
+                                22.808128829667968,
+                                0.6109730225311317
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                36
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 37,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 37,
+                            "element": "Na",
+                            "coordinate": [
+                                -2.2738261875388304,
+                                18.896930544185892,
+                                1.833387719672302
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                37
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 38,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 38,
+                            "element": "Cl",
+                            "coordinate": [
+                                20.450130461086054,
+                                22.024425390715418,
+                                5.501346127570922
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                38
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 39,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 39,
+                            "element": "Na",
+                            "coordinate": [
+                                -1.136211060514117,
+                                20.19895184405305,
+                                9.169304535469541
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                39
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 40,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 40,
+                            "element": "Cl",
+                            "coordinate": [
+                                -0.00048565961402882295,
+                                -1.4346328306627691,
+                                12.837262943368161
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                40
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 41,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 41,
+                            "element": "Na",
+                            "coordinate": [
+                                -0.0009732089541822718,
+                                21.503552620080317,
+                                16.503331625142156
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                41
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 42,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 42,
+                            "element": "Cl",
+                            "coordinate": [
+                                1.135239741286059,
+                                -0.13072180467098765,
+                                20.171291922766898
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                42
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 43,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 43,
+                            "element": "Na",
+                            "coordinate": [
+                                4.5443056701109485,
+                                -1.9561972410594817,
+                                23.83925033066552
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                43
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 44,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 44,
+                            "element": "Cl",
+                            "coordinate": [
+                                5.680031071011036,
+                                5.081142847046887,
+                                3.0560405223051754
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                44
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 45,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 45,
+                            "element": "Na",
+                            "coordinate": [
+                                2.270965142186147,
+                                1.171299495196168,
+                                4.278693324938049
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                45
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 46,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 46,
+                            "element": "Cl",
+                            "coordinate": [
+                                -0.00048565961402882295,
+                                4.300685957576444,
+                                7.946651732836668
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                46
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 47,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 47,
+                            "element": "Na",
+                            "coordinate": [
+                                3.408580269210861,
+                                2.4752105211879494,
+                                11.614610140735289
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                47
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 48,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 48,
+                            "element": "Cl",
+                            "coordinate": [
+                                1.135239741286059,
+                                5.6027072574435985,
+                                15.280678822509284
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                48
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 49,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 49,
+                            "element": "Na",
+                            "coordinate": [
+                                4.5443056701109485,
+                                3.779121547179731,
+                                18.948637230407904
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                49
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 50,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 50,
+                            "element": "Cl",
+                            "coordinate": [
+                                2.270965142186147,
+                                6.906618283435381,
+                                22.616595638306524
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                50
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 51,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 51,
+                            "element": "Na",
+                            "coordinate": [
+                                3.408580269210861,
+                                8.210529309427162,
+                                6.723998930203796
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                51
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 52,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 52,
+                            "element": "Cl",
+                            "coordinate": [
+                                1.135239741286059,
+                                11.338026045682813,
+                                10.391957338102415
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                52
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 53,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 53,
+                            "element": "Cl",
+                            "coordinate": [
+                                2.270965142186147,
+                                12.640047345549966,
+                                17.72598442777503
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                53
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 54,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 54,
+                            "element": "Na",
+                            "coordinate": [
+                                5.680031071011036,
+                                10.8164616352861,
+                                21.39394283567365
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                54
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 55,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 55,
+                            "element": "Cl",
+                            "coordinate": [
+                                6.818131857649779,
+                                17.855156657023823,
+                                0.6109730225311317
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                55
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 56,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 56,
+                            "element": "Na",
+                            "coordinate": [
+                                3.408580269210861,
+                                13.943958371541749,
+                                1.833387719672302
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                56
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 57,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 57,
+                            "element": "Cl",
+                            "coordinate": [
+                                1.135239741286059,
+                                17.071455107797398,
+                                5.501346127570922
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                57
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 58,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 58,
+                            "element": "Na",
+                            "coordinate": [
+                                4.5443056701109485,
+                                15.247869397533531,
+                                9.169304535469541
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                58
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 59,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 59,
+                            "element": "Cl",
+                            "coordinate": [
+                                2.270965142186147,
+                                18.37536613378918,
+                                12.837262943368161
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                59
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 60,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 60,
+                            "element": "Na",
+                            "coordinate": [
+                                5.680031071011036,
+                                16.549890697400688,
+                                16.503331625142156
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                60
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 61,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 61,
+                            "element": "Cl",
+                            "coordinate": [
+                                3.408580269210861,
+                                19.67927715978096,
+                                20.171291922766898
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                61
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 62,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 62,
+                            "element": "Na",
+                            "coordinate": [
+                                6.815756471911124,
+                                17.853799833666343,
+                                23.83925033066552
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                62
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 63,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 63,
+                            "element": "Cl",
+                            "coordinate": [
+                                11.360547801636102,
+                                0.13006040052736864,
+                                3.0560405223051754
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                63
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 64,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 64,
+                            "element": "Na",
+                            "coordinate": [
+                                4.5443056701109485,
+                                20.981298459648116,
+                                4.278693324938049
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                64
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 65,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 65,
+                            "element": "Cl",
+                            "coordinate": [
+                                5.680031071011036,
+                                -0.6522862150677002,
+                                7.946651732836668
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                65
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 66,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 66,
+                            "element": "Na",
+                            "coordinate": [
+                                5.679545411397007,
+                                22.28401139927689,
+                                11.614610140735289
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                66
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 67,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 67,
+                            "element": "Cl",
+                            "coordinate": [
+                                6.815756471911124,
+                                0.6516248109240812,
+                                15.280678822509284
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                67
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 68,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 68,
+                            "element": "Na",
+                            "coordinate": [
+                                10.224822400736015,
+                                -1.173850625464413,
+                                18.948637230407904
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                68
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 69,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 69,
+                            "element": "Cl",
+                            "coordinate": [
+                                7.951481872811212,
+                                1.9536461107912368,
+                                22.616595638306524
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                69
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 70,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 70,
+                            "element": "Na",
+                            "coordinate": [
+                                9.089096999835926,
+                                3.257557136783018,
+                                6.723998930203796
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                70
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 71,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 71,
+                            "element": "Na",
+                            "coordinate": [
+                                10.224822400736015,
+                                4.5614681627748,
+                                14.059915746001035
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                71
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 72,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 72,
+                            "element": "Na",
+                            "coordinate": [
+                                11.360547801636102,
+                                5.863489462641956,
+                                21.39394283567365
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                72
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 73,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 73,
+                            "element": "Cl",
+                            "coordinate": [
+                                12.498648588274843,
+                                12.902184484379681,
+                                0.6109730225311317
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                73
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 74,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 74,
+                            "element": "Na",
+                            "coordinate": [
+                                9.089096999835926,
+                                8.990986198897605,
+                                1.833387719672302
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                74
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 75,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 75,
+                            "element": "Cl",
+                            "coordinate": [
+                                6.815756471911124,
+                                12.12037266127788,
+                                5.501346127570922
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                75
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 76,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 76,
+                            "element": "Cl",
+                            "coordinate": [
+                                9.089096999835926,
+                                14.726304987136817,
+                                20.171291922766898
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                76
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 77,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 77,
+                            "element": "Na",
+                            "coordinate": [
+                                12.496271312810064,
+                                12.900829550748325,
+                                23.83925033066552
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                77
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 78,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 78,
+                            "element": "Cl",
+                            "coordinate": [
+                                13.633888329560904,
+                                19.938169638854692,
+                                3.0560405223051754
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                78
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 79,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 79,
+                            "element": "Na",
+                            "coordinate": [
+                                10.224822400736015,
+                                16.028326287003974,
+                                4.278693324938049
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                79
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 80,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 80,
+                            "element": "Cl",
+                            "coordinate": [
+                                7.951481872811212,
+                                19.15771274938425,
+                                7.946651732836668
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                80
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 81,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 81,
+                            "element": "Na",
+                            "coordinate": [
+                                11.360547801636102,
+                                17.332235423269633,
+                                11.614610140735289
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                81
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 82,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 82,
+                            "element": "Cl",
+                            "coordinate": [
+                                9.089096999835926,
+                                20.459734049251402,
+                                15.280678822509284
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                82
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 83,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 83,
+                            "element": "Na",
+                            "coordinate": [
+                                12.496271312810064,
+                                18.636148338987535,
+                                18.948637230407904
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                83
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 84,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 84,
+                            "element": "Cl",
+                            "coordinate": [
+                                13.633888329560904,
+                                -2.9974363357282807,
+                                22.616595638306524
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                84
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 85,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 85,
+                            "element": "Na",
+                            "coordinate": [
+                                11.360060252295948,
+                                23.06635612514583,
+                                6.723998930203796
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                85
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 86,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 86,
+                            "element": "Cl",
+                            "coordinate": [
+                                12.496271312810064,
+                                1.4320817003945243,
+                                10.391957338102415
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                86
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 87,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 87,
+                            "element": "Na",
+                            "coordinate": [
+                                15.905337241634953,
+                                -0.3915040098693439,
+                                14.059915746001035
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                87
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 88,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 88,
+                            "element": "Cl",
+                            "coordinate": [
+                                13.633888329560904,
+                                2.7359927263863058,
+                                17.72598442777503
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                88
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 89,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 89,
+                            "element": "Na",
+                            "coordinate": [
+                                14.769611840734868,
+                                4.039903752378087,
+                                1.833387719672302
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                89
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 90,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 90,
+                            "element": "Cl",
+                            "coordinate": [
+                                12.496271312810064,
+                                7.167400488633737,
+                                5.501346127570922
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                90
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 91,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 91,
+                            "element": "Na",
+                            "coordinate": [
+                                15.905337241634953,
+                                5.341925052245243,
+                                9.169304535469541
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                91
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 92,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 92,
+                            "element": "Cl",
+                            "coordinate": [
+                                13.633888329560904,
+                                8.47131151462552,
+                                12.837262943368161
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                92
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 93,
+                    "name": "Na",
+                    "atoms": [
+                        {
+                            "index": 93,
+                            "element": "Na",
+                            "coordinate": [
+                                15.905337241634953,
+                                11.077243840484455,
+                                4.278693324938049
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    1.0
+                                ]
+                            },
+                            "exclusions": [
+                                93
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.0,
+                                    0.48203,
+                                    0.0,
+                                    0.48203
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "index": 94,
+                    "name": "Cl",
+                    "atoms": [
+                        {
+                            "index": 94,
+                            "element": "Cl",
+                            "coordinate": [
+                                13.633888329560904,
+                                14.204740576740106,
+                                7.946651732836668
+                            ],
+                            "multipoles": {
+                                "elements": [
+                                    -1.0
+                                ]
+                            },
+                            "exclusions": [
+                                94
+                            ],
+                            "polarizabilities": {
+                                "elements": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    0.0,
+                                    28.83,
+                                    0.0,
+                                    28.83
+                                ],
+                                "order": [
+                                    1,
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
