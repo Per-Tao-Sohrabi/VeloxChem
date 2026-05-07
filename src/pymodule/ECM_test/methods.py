@@ -21,7 +21,6 @@ ATOMIC_NUMBERS = {
     'S': 16, 'Cl': 17, 'Ar': 18, 'K': 19, 'Ca': 20,
 }
 
-
 PossiblePhases = Literal['1h', '1c']    
 def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_filename, target_supercell_shape, target_supercell_size, write_to_pdb = True, plot = True):
     super_cell_filename = f'{phase}x{cell_dimensions[0]}{cell_dimensions[1]}{cell_dimensions[2]}_supercell'
@@ -463,6 +462,7 @@ def calc_chemical_potential(species, basis_set='6-31G'):
         'H2O': "3\n\nO 0.0 0.0 0.117\nH 0.0 0.757 -0.469\nH 0.0 -0.757 -0.469\n",
         'Na':  "1\n\nNa 0.0 0.0 0.0\n",
         'Cl':  "1\n\nCl 0.0 0.0 0.0\n",
+        'NaCl': "2\n\nNa 0.0 0.0 0.0\nCl 2.36 0.0 0.0\n",
     }
 
     mol = vlx.Molecule.read_xyz_string(GEOMETRIES.get(species, species))
