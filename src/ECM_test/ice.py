@@ -9,6 +9,15 @@ GENERAL_FILE_NAME = f'1hx{UNIT_CELL_DIMENSIONS[0]}{UNIT_CELL_DIMENSIONS[1]}{UNIT
 PDB_FILE = f'{PATH}/{GENERAL_FILE_NAME}.pdb'
 DEFECT_PDB_FILE = f'{PATH}/defect_{GENERAL_FILE_NAME}.pdb'
 PE_CUTOFF = 16.0
+# Change to make user input a molecule object. 
+GEOMETRIES = {
+    'H2O': "3\n\nO 0.0 0.0 0.117\nH 0.0 0.757 -0.469\nH 0.0 -0.757 -0.469\n",
+    'Na':  "1\n\nNa 0.0 0.0 0.0\n",
+    'Cl':  "1\n\nCl 0.0 0.0 0.0\n",
+    'NaCl': "2\n\nNa 0.0 0.0 0.0\nCl 2.36 0.0 0.0\n",
+}
+CHARGE_MAP = {'O': 2, 'C': 0, 'H': -1, 'Na': 1, 'Cl': -1}  
+
 
 def ice(path=PATH, unit_cell_dimensions=UNIT_CELL_DIMENSIONS, general_file_name=GENERAL_FILE_NAME, pdb_file=PDB_FILE, defect_pdb_file=DEFECT_PDB_FILE, pe_cutoff=PE_CUTOFF):
     from ase.build import bulk
@@ -20,7 +29,11 @@ def ice(path=PATH, unit_cell_dimensions=UNIT_CELL_DIMENSIONS, general_file_name=
     import os
 
     ##########################################################################################    
-    #                                 
+    #                                   GENERATE ICE SUPERCELL                                       
+    ##########################################################################################    
+    os.system(f'genice2 --rep {unit_cell_dimensions[0]} {unit_cell_dimensions[1]} {unit_cell_dimensions[2]} 1h --format cif > {path}/{general_file_name}.cif')
+    atoms = read(f'{path}/{general_file_name}.cif', format='cif')
+    write(f'{pdb_file}', atoms)
 
     ##########################################################################################    
     #                                   FIND QM REGION                                           
@@ -39,7 +52,7 @@ def ice(path=PATH, unit_cell_dimensions=UNIT_CELL_DIMENSIONS, general_file_name=
     # RENAME RESIDUES
     process_pdb( 
         filename=pdb_file,
-        patterns={'WAT': [' O', ' H', ' H']},
+        patterns={'WAT': ['O', 'H', 'H']},
         qm_ids=candidate_qm_water,
         qm_resname='LIG'
     )

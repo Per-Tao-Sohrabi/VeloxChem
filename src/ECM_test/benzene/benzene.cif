@@ -1,0 +1,40 @@
+# AFLOW.org Repositories
+# CH/AB_oP48_61_3c_3c-001 params=6.914,1.08128,1.38314,0.1297,0.5762,0.40803,0.1235,0.6328,0.54518,0.0057,0.4432,0.36289,0.2172,0.6275,0.346,0.2068,0.7225,0.5756,0.0095,0.4051,0.2704 SG=61 [ANRL doi: 10.1016/j.commatsci.2017.01.017 (part 1), doi: 10.1016/j.commatsci.2018.10.043 (part 2)]
+data_CH
+_pd_phase_name AB_oP48_61_3c_3c-001
+_cell_length_a  6.9140000000
+_cell_length_b  7.4759699200
+_cell_length_c  9.5630299600
+_cell_angle_alpha  90.0000000000
+_cell_angle_beta  90.0000000000
+_cell_angle_gamma  90.0000000000
+_symmetry_space_group_name_H-M  'Pbca'
+_symmetry_Int_Tables_Number  61
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+  1  x,y,z
+  2  -x+1/2,-y,z+1/2
+  3  -x,y+1/2,-z+1/2
+  4  x+1/2,-y+1/2,-z
+  5  -x,-y,-z
+  6  x+1/2,y,-z+1/2
+  7  x,-y+1/2,z+1/2
+  8  -x+1/2,y+1/2,z
+loop_
+ _atom_site_label
+ _atom_site_occupancy
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_adp_type
+ _atom_site_B_iso_or_equiv
+ _atom_site_type_symbol
+ _atom_site_symmetry_multiplicity
+ _atom_site_Wyckoff_label
+C1 1.0000000000 0.1297000000 0.5762000000 0.4080300000  Biso 1.0 C 8 c
+C2 1.0000000000 0.1235000000 0.6328000000 0.5451800000  Biso 1.0 C 8 c
+C3 1.0000000000 0.0057000000 0.4432000000 0.3628900000  Biso 1.0 C 8 c
+H4 1.0000000000 0.2172000000 0.6275000000 0.3460000000  Biso 1.0 H 8 c
+H5 1.0000000000 0.2068000000 0.7225000000 0.5756000000  Biso 1.0 H 8 c
+H6 1.0000000000 0.0095000000 0.4051000000 0.2704000000  Biso 1.0 H 8 c

@@ -40,3 +40,18 @@ dependencies:
   - toml
   - flake8
   - pymbar
+  - pandas
+  - matplotlib
+  - seaborn
+  - jax
+  - jaxlib
+  - scikit-learn
+  - networkx
+  - tqdm
+  - pip:
+      - ase
+      - genice2
+      - pdb-tools
+      - daltools
+      - loprop
+      - blocked-matrix-utils

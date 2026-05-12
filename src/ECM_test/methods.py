@@ -1,5 +1,4 @@
-from jax.lax import switch
-from tracemalloc import stop
+import veloxchem
 import os
 from typing import Literal
 from ase.io import read, write
@@ -14,11 +13,18 @@ import pandas as pd
 #from pymodule.ECM_test.tempfiles.main import PDB_FILE, QM_RESNAME
 
 PATH = 'tempfiles'
-CHARGE_MAP = {'O': 2, 'C': 0, 'H': -1, 'Na': 1, 'Cl': -1}  
+CHARGE_MAP = {'O': -2, 'C': 0, 'H': 0, 'Na': 1, 'Cl': -1}  
 ATOMIC_NUMBERS = {
     'H': 1, 'He': 2, 'Li': 3, 'Be': 4, 'B': 5, 'C': 6, 'N': 7, 'O': 8,
     'F': 9, 'Ne': 10, 'Na': 11, 'Mg': 12, 'Al': 13, 'Si': 14, 'P': 15,
     'S': 16, 'Cl': 17, 'Ar': 18, 'K': 19, 'Ca': 20,
+}
+# Change to make user input a molecule object. 
+GEOMETRIES = {
+    'H2O': "3\n\nO 0.0 0.0 0.117\nH 0.0 0.757 -0.469\nH 0.0 -0.757 -0.469\n",
+    'Na':  "1\n\nNa 0.0 0.0 0.0\n",
+    'Cl':  "1\n\nCl 0.0 0.0 0.0\n",
+    'NaCl': "2\n\nNa 0.0 0.0 0.0\nCl 2.36 0.0 0.0\n",
 }
 
 PossiblePhases = Literal['1h', '1c']    
@@ -68,7 +74,7 @@ def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_f
         plot_atoms(ice_block)
 
 # TODO: Generalize this function to output more geometry parameters if necessary
-def get_space_dimensions(filename = None, ):
+def get_space_dimensions(filename = None):
     
     supercell = read(f'{filename}')
     '''
@@ -97,12 +103,12 @@ def get_space_dimensions(filename = None, ):
             y = iy
         if iz > z:
             z = iz
-        print(ix)
+        # print(ix)
     # print(x, y, z)
     return [x, y, z]
 
 # TODO: Simplify to output all indecies in QM region. 
-def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=True):
+def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=True, debug=False):
     '''
     Returns dict mapping resnames to lists of atom indices within the QM cuboid region.
     
@@ -117,14 +123,17 @@ def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=T
         Dict like {'WAT': [3, 15, 27], 'ION': [5]} — starting atom indices per resname.
     '''
     supercell = read(f'{filename}')
+    if debug: print(f'DEBUG: supercell {supercell}')
     x, y, z = get_space_dimensions(filename)
     
     midpoint = [x/2, y/2, z/2]
+    if debug: print(f'DEBUG: x, y, z, midpoint{x, y, z, midpoint}')
     x_threshold = [(midpoint[0] - x * cuboid_threshold), (midpoint[0] + x * cuboid_threshold)]
     y_threshold = [(midpoint[1] - y * cuboid_threshold), (midpoint[1] + y * cuboid_threshold)]
     z_threshold = [(midpoint[2] - z * cuboid_threshold), (midpoint[2] + z * cuboid_threshold)]
 
     symbols = list(supercell.symbols)
+    if debug: print(f'DEBUG: symbols {symbols}')
     qm_candidates = {}
 
     for resname, pattern in patterns.items():
@@ -147,6 +156,274 @@ def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=T
             print(f'Pattern {resname} {pattern}: {len(matches)} total, {len(candidates)} in QM region')
 
     return qm_candidates
+
+# TODO: Draft.
+
+
+
+def identify_connectivity_pdb(filename, bonds_length, debug=False):
+    import numpy as np
+    from ase.io import read
+    from scipy.spatial import cKDTree
+    from collections import defaultdict
+
+    # 1. Read the supercell
+    supercell = read(filename)
+    positions = supercell.positions
+    symbols = supercell.get_chemical_symbols()
+
+    # 2. Parse bond lengths into a hash map (dictionary) for O(1) lookups
+    # Assuming bonds_length is a list of tuples like: [('C', 'O', 1.5), ('H', 'O', 1.2)]
+    bond_cutoffs = {}
+    max_cutoff = 0.0
+    
+    for sym1, sym2, length in bonds_length:
+        bond_cutoffs[(sym1, sym2)] = length
+        bond_cutoffs[(sym2, sym1)] = length  # Account for both directions
+        max_cutoff = max(max_cutoff, length) # Find the absolute longest bond
+
+    # 3. Use a KD-Tree to find all pairs within the maximum possible cutoff
+    # This completely eliminates the O(N^2) nested loop bottleneck.
+    tree = cKDTree(positions)
+    pairs = tree.query_pairs(r=max_cutoff)
+
+    # 4. Build an Adjacency List (Graph)
+    graph = defaultdict(list)
+    
+    for i, j in pairs:
+        sym_i, sym_j = symbols[i], symbols[j]
+        
+        # Check if this specific pair of elements has a defined bond rule
+        if (sym_i, sym_j) in bond_cutoffs:
+            dist = np.linalg.norm(positions[i] - positions[j])
+            
+            # If distance is within the specific bond length, connect them
+            if dist <= bond_cutoffs[(sym_i, sym_j)]:
+                graph[i].append(j)
+                graph[j].append(i)
+
+    # 5. Find Connected Components (Collections of atoms)
+    # This groups the connected graph into separate molecules/clusters
+    visited = set()
+    collections = []
+
+    for atom_idx in range(len(supercell)):
+        if atom_idx not in visited:
+            # Start a Breadth-First Search (BFS) to find the whole molecule
+            molecule = []
+            queue = [atom_idx]
+            visited.add(atom_idx)
+
+            while queue:
+                current_atom = queue.pop(0)
+                molecule.append(current_atom)
+                
+                # Check all neighbors of the current atom
+                for neighbor in graph[current_atom]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+            
+            # Add the completed molecule to our collections
+            collections.append(molecule)
+
+    if debug:
+        print(f"Total atoms: {len(supercell)}")
+        print(f"Total separate collections found: {len(collections)}")
+
+    return collections
+
+def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=0.1, debug = False, clear_unmatched = False):
+    from ase.io import read
+    
+    # Access each molecular residue, Identify lneght. Remove any indcies not in collection. 
+    # Tasks to complete:
+    # 1. Delete unconsidered atoms.
+    # 2. Assign qm atoms by assessing wether a collection has a median position within the threshold. 
+    # 3. Update and output a new file. 
+
+    # Method:
+    # Itteate through all given data. 
+    # Reference the respective data lines. Note to always keep track of the offest between line indecies and atom indecies. Note also that atom indecies are 0-based. 
+    # Proposal:
+    # Eneter each collection. 
+    # Check the length.
+    # If lenght is off and clearing is True, delete the respective line entries and record the offset somehow. Maybe set the line to blank? 
+    # If clearing is False, do something else. 
+    # if lneght is good,
+    # Check the median position of the collection. 
+    # If in qm, 
+    # Set the qm resname for each index. 
+    # while in both cases, the next resnumber is assigned. 
+    # When done, write lines to output file. 
+    
+    if debug: print(f'DEBUG: Running process_pdb_advanced on {filename}')
+    with open(filename) as f:
+        lines = f.readlines()
+    out = []
+
+    crystal = read(filename)
+
+    # Identify ATOM data region
+    start_idx = None
+    end_idx = None
+    for i, line in enumerate(lines):
+        if line.startswith('ATOM'):
+            if start_idx is None:
+                start_idx = i
+            end_idx = i
+            if clear_unmatched: out.append(' \n') # append empty
+            else: out.append(line)
+        else: 
+            out.append(line)
+    if start_idx is None:
+        print('No ATOM lines found.')
+        return
+
+    # 0. GET SYSTEM CENTER
+    x, y, z = get_space_dimensions(filename=filename)
+    midpoint = [x/2, y/2, z/2]
+    if debug: print(f'DEUBG: Model midpoint {midpoint}')
+
+    # 0. EDGE CASE CHECK    
+    curr_residue_id = 1
+    if clear_unmatched: curr_residue_id = 2
+
+    if (len(qm_resname) > 3):
+        raise ValueError('Residue names must be 3 characters long.')
+    if debug:
+        print(f'DEBUG: curr_residue_id {curr_residue_id}')
+        print(f'DEBUG: qm_resname {qm_resname}')
+        print(f'DEBUG: qm_threshold {qm_threshold}')
+        # print(f'DEBUG: mol_residues {mol_residues}')
+        # print(f'DEBUG: All lines in the file {lines}')
+
+    # 1. CHECK FOR INCOMPLETE MOLECULES
+    delete_indices = []
+    qm_indices = []
+    for resname, val in mol_residues.items():
+        if debug:
+            print(f'DEBUG: resname {resname}')
+            print(f'DEBUG: num_colects {len(val[0])}')
+            print(f'DEBUG: res_len {val[1]}')
+        # Regard the residue length and collection.
+        colects = val[0]  # Colelction of atom indecies belong to a particular molecule.
+        res_len = val[1]
+        
+        # 1.2. ChECK INCOMPLETE MOLECULES CONDITION
+        for collect in colects:
+            if len(collect) != res_len:
+                print(f'Length of collection {resname} does not match the expected length {res_len}.')
+                print(f'Length of collection {resname} is {len(collect)}.')
+                for atom_idx in collect:
+                    if debug: print(f'DEBUG: Marked atom {atom_idx} for deletion')
+                    delete_indices.append(atom_idx)
+        
+            # Assign QM Atoms # NOTE Draft. Only assign env resnames for now. 
+            if len(collect) == res_len:
+                if debug: print(f'DEBUG: Starting process for {collect}')
+                # 3. FIND COLLECTION CENTER
+
+                
+                positions = [crystal[atom_idx].position for atom_idx in collect]
+                totle_pos = np.zeros(3)
+                for i in positions:
+                    totle_pos += i
+                mean_pos = totle_pos / len(positions)
+                
+                if (
+                    midpoint[0] - x*qm_threshold < mean_pos[0] < midpoint[0] + x*qm_threshold and
+                    midpoint[1] - y*qm_threshold < mean_pos[1] < midpoint[1] + y*qm_threshold and
+                    midpoint[2] - z*qm_threshold < mean_pos[2] < midpoint[2] + z*qm_threshold
+                ):
+                    curr_res_name = qm_resname
+                    qm_indices.append(collect)
+                else:
+                    curr_res_name = resname
+
+                for i in collect:
+                    line_idx = start_idx + i 
+                    curr_line = lines[line_idx]
+                    # Pad curr_residue_id string to length 4 for standard PDB format alignment
+                    res_id_str = str(curr_residue_id).rjust(4)
+                    new_line = curr_line[:17] + curr_res_name + curr_line[20:22] + res_id_str + curr_line[26:] # Overwrite res name.
+                    out[line_idx] = new_line
+                
+                curr_residue_id += 1
+        
+    # Ensure that all atoms of the same residue appear contiguously in the final file, 
+    # and maintain identical inner-residue alphabetical ordering for VeloxChem sanity.
+    non_atoms = [l for l in out if not l.startswith('ATOM')]
+    valid_atoms = [l for l in out if l.startswith('ATOM') and l.strip() != '']
+
+    from collections import defaultdict
+    residue_map = defaultdict(list)
+    for line in valid_atoms:
+        try:
+            rid = int(line[22:26])
+        except:
+            rid = 0
+        residue_map[rid].append(line)
+    
+    # 1. Sort by Residue ID to guarantee contiguity
+    # 2. Sort inner atoms by element/alphabetical name to ensure unified pattern across all resid instances
+    final_ordered_atoms = []
+    for rid in sorted(residue_map.keys()):
+        group = residue_map[rid]
+        group.sort(key=lambda l: (l[76:78].strip() or l[13:14], l[30:38])) # Sort by element then X-coord for stability
+        final_ordered_atoms.extend(group)
+
+    # Renumber total atom index count from 1 to avoid gaps/shuffled IDs
+    for i, l in enumerate(final_ordered_atoms):
+        final_ordered_atoms[i] = l[:6] + f'{(i+1):5d}' + l[11:]
+    
+    # Re-stitch the finalized file structure
+    atom_marker_idx = 0
+    for i, line in enumerate(out):
+        if line.startswith('ATOM'):
+            atom_marker_idx = i
+            break
+    
+    header = out[:atom_marker_idx]
+    footer = [l for l in out[atom_marker_idx:] if not l.startswith('ATOM')]
+    
+    # Replace "out" with fully rectified sequence
+    out = header + final_ordered_atoms + footer
+    
+    with open(filename, 'w') as f:
+        f.writelines(out)
+
+    # Disover the actual new indices that made it into the finalized output
+    final_qm_map = {}
+    atom_count = 0
+    for line in out:
+        if line.startswith('ATOM'):
+            # Use exact PDB column offsets to read values injected earlier
+            injected_resname = line[17:20].strip()
+            injected_resid = line[22:26].strip()
+            if injected_resname == qm_resname:
+                if injected_resid not in final_qm_map:
+                    final_qm_map[injected_resid] = []
+                final_qm_map[injected_resid].append(atom_count)
+            atom_count += 1
+            
+    return list(final_qm_map.values())
+
+
+                
+            # totle_pos = np.zeros(3)
+            # for i in colect:
+            #     totle_pos += i.get_positions()
+            # mean_pos = totle_pos / len(colect)
+
+            
+            
+
+                
+
+    
+    
+    
 
 def process_pdb(filename, patterns, qm_ids=None, qm_resname=None):
     """
@@ -184,7 +461,7 @@ def process_pdb(filename, patterns, qm_ids=None, qm_resname=None):
     print(f'Data row index limits: Start: {start_idx}; End: {end_idx}')
 
     # Extract atom symbols from the ATOM region
-    symbols = [line[14:16] for line in lines[start_idx:end_idx + 1]]
+    symbols = [line[14:16].strip() for line in lines[start_idx:end_idx + 1]]
 
     # Find all matching segments for every pattern
     matches = []  # (line_index, pattern_length, resname)
@@ -450,22 +727,14 @@ def calc_potential_alignment(scf_results_perfect, scf_results_defect):
 
 
 # NOTE: Draft
-def calc_chemical_potential(species, basis_set='6-31G'):
+def calc_chemical_potential(species, geometries, basis_set='6-31G', dispersion = False):
     '''
     Compute isolated atom/molecule energy as chemical potential reference.
     Uses unrestricted SCF for open-shell species (Na, Cl).
     '''
     import veloxchem as vlx
 
-    # Change to make user input a molecule object. 
-    GEOMETRIES = {
-        'H2O': "3\n\nO 0.0 0.0 0.117\nH 0.0 0.757 -0.469\nH 0.0 -0.757 -0.469\n",
-        'Na':  "1\n\nNa 0.0 0.0 0.0\n",
-        'Cl':  "1\n\nCl 0.0 0.0 0.0\n",
-        'NaCl': "2\n\nNa 0.0 0.0 0.0\nCl 2.36 0.0 0.0\n",
-    }
-
-    mol = vlx.Molecule.read_xyz_string(GEOMETRIES.get(species, species))
+    mol = vlx.Molecule.read_xyz_string(geometries.get(species, species))
     bas = vlx.MolecularBasis.read(mol, basis_set)
 
     if mol.number_of_electrons() % 2 == 0:
@@ -475,8 +744,8 @@ def calc_chemical_potential(species, basis_set='6-31G'):
         scf_drv = vlx.ScfUnrestrictedDriver()
         mol.set_multiplicity(2)
 
-
     scf_drv.conv_thresh = 1.0e-6
+    scf_drv.dispersion = dispersion
     scf_drv.compute(mol, bas)
     energy = scf_drv.get_scf_energy()
     print(f'μ({species}) at HF/{basis_set} = {energy:.10f} Hartree')
@@ -572,7 +841,7 @@ def calc_chemical_potential_h2o(basis_set='6-31G'):
     print(f'μ(H₂O) at HF/{basis_set} = {energy:.10f} Hartree')
     return energy
 
-def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_charge=0, qm_multiplicity=1):
+def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_charge=0, qm_multiplicity=1, pe_model = 'SEP', npe_model='tip3p', dispersion = False):
     print("Ensemble parser instance created.")
     ep = veloxchem.ensembleparser.EnsembleParser()   
     '''
@@ -606,20 +875,73 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
         pe_cutoff = pe_cutoff,
         npe_cutoff=npe_cutoff
     )
+    if pe_model != None and npe_model != None or pe_cutoff != None or npe_cutoff != None:
+        ed.set_env_models(pe_model = pe_model, npe_model=npe_model)
+    elif pe_model != None:
+        ed.set_env_models(pe_model = pe_model)
+    elif npe_model != None:
+        ed.set_env_models(npe_model = npe_model)
 
-    ed.set_env_models(pe_model = 'SEP', npe_model='tip3p')
+    # Enable dispersion on the underlying SCF driver
+    ed.update_settings(scf_dict={'dispersion': dispersion, 'max_iter': 150})
 
     # TODO: Testa att sätta ed.xcfun = 'B3LYP'
-
+    #ed.xcfun = 'B3LYP'
     scf_results = ed.compute(ensemble, basis_set = '6-31G', qm_charge=qm_charge, qm_multiplicity=qm_multiplicity)
     return scf_results
+    
+# NOTE: Draft.
+def calc_energy_tot_relaxed(filename, qm_resname, pe_cutoff=6.0, 
+                            qm_charge=0, qm_multiplicity=1,
+                            basis_set='6-31G'):
+    import veloxchem as vlx
+    
+    # 1. Parse the structure (reuse EnsembleParser for coordinate extraction)
+    ep = vlx.EnsembleParser()
+    snapshots = ep.structures(
+        trajectory_file=filename,
+        qm_region=f"resname {qm_resname}",
+        pe_cutoff=pe_cutoff
+    )
+    snap = snapshots[0]
+    
+    # 2. Build molecule + basis
+    mol = vlx.Molecule(snap['qm_elements'], snap['qm_coords'])
+    mol.set_charge(qm_charge)
+    mol.set_multiplicity(qm_multiplicity)
+    bas = vlx.MolecularBasis.read(mol, basis_set)
+    #print(f'DEBUG: Moelcular coordinates: {mol.get_positions()}')
+    print(f'Molecualr basis: {bas}')
+    
+    # 3. Write PE potfile (reuse EnsembleDriver's writer)
+    ed = vlx.EnsembleDriver()
+    ed.set_env_models(pe_model='SEP', npe_model='tip3p')
+    ed.write_pot_files([snap], outdir='pot_frames')
+    
+    # 4. Configure SCF driver with PE
+    scf_drv = vlx.ScfRestrictedDriver()
+    scf_drv.potfile = f'pot_frames/pe_frame_{snap["frame"]:06d}.pot'
+    
+    # 5. Run geometry optimization (uses ScfGradientDriver + PE grad internally)
+    opt_drv = vlx.OptimizationDriver(scf_drv)
+    opt_drv.max_iter = 100
+    opt_results = opt_drv.compute(mol, bas) # NOTE: SCF did not converge, need to fix this
+    
+    # 6. Get relaxed energy
+    final_mol = opt_results['final_molecule']
+    scf_drv.compute(final_mol, bas)
+    energy = scf_drv.get_scf_energy()
+    
+    return energy, opt_results
+
 
 def calc_formation_energy(filename_perf, filename_defect, qm_resname,
                           chemical_potentials,
                           charge_state=0,
                           e_fermi=0.0, e_vbm=0.0, delta_v=0.0,
                           pe_cutoff=None, npe_cutoff=None,
-                          charge_map=CHARGE_MAP):
+                          charge_map=CHARGE_MAP, dispersion = False, 
+                          debug=False):
     '''
     Van de Walle formation energy:
     E_f = E[def] - E[perf] + Σ nᵢμᵢ + q(E_F + E_VBM + ΔV)
@@ -644,8 +966,12 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
     ch_p, mu_p = calc_charge_multiplicity(
         filename=filename_perf, qm_resname=qm_resname, charge_map=charge_map)
     res_p = calc_energy_tot(filename=filename_perf, qm_resname=qm_resname,
-        pe_cutoff=pe_cutoff, npe_cutoff=npe_cutoff,
-        qm_charge=ch_p, qm_multiplicity=mu_p)
+        pe_cutoff=pe_cutoff, qm_charge=ch_p, qm_multiplicity=mu_p, npe_cutoff=npe_cutoff,
+        dispersion=dispersion)
+    
+    if debug:
+        print(f'DEBUG: res_p {res_p}')
+
     E_perf = res_p['scf_all'][0][1]['scf_energy']
     print(f'  \tE_perf = {E_perf:.10f} Ha (q={ch_p}, mult={mu_p})')
 
@@ -654,8 +980,9 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
     ch_d, mu_d = calc_charge_multiplicity(
         filename=filename_defect, qm_resname=qm_resname, charge_map=charge_map)
     res_d = calc_energy_tot(filename=filename_defect, qm_resname=qm_resname,
-        pe_cutoff=pe_cutoff, npe_cutoff=npe_cutoff,
-        qm_charge=ch_d, qm_multiplicity=mu_d)
+        pe_cutoff=pe_cutoff, qm_charge=ch_d, qm_multiplicity=mu_d, npe_cutoff=npe_cutoff,
+        dispersion=dispersion)
+        
     E_def = res_d['scf_all'][0][1]['scf_energy']
     print(f'  \tE_def  = {E_def:.10f} Ha (q={ch_d}, mult={mu_d})')
 
@@ -681,5 +1008,5 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
     print(f'  Σnᵢμᵢ  = {mu_sum:.10f} Ha')
     if q != 0: print(f'  q·corr  = {q_corr:.10f} Ha')
     print(f'  E_f     = {E_f:.10f} Ha = {E_f * HARTREE_TO_EV:.6f} eV')
-    return E_f
+    return {'output':{'E_f':E_f, 'dE':dE, 'mu_sum':mu_sum, 'q_corr':q_corr}, 'perf_scf': res_p, 'defect_scf': res_d}
 

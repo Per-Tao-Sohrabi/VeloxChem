@@ -160,3 +160,4 @@ ConfigMKL.hpp
 veloxchem.sh
 
 tempfiles
+src/pymodule/ECM_test/text.md
