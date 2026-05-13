@@ -169,7 +169,8 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
 
     # 1. Read the supercell
     supercell = read(filename)
-    positions = supercell.positions
+    box_dimensions = supercell.cell.lengths()
+    positions = np.mod(supercell.positions, box_dimensions)
     symbols = supercell.get_chemical_symbols()
 
     # 2. Parse bond lengths into a hash map (dictionary) for O(1) lookups
@@ -184,7 +185,8 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
 
     # 3. Use a KD-Tree to find all pairs within the maximum possible cutoff
     # This completely eliminates the O(N^2) nested loop bottleneck.
-    tree = cKDTree(positions)
+    box_dimensions = supercell.cell.lengths()
+    tree = cKDTree(positions, boxsize=box_dimensions)
     pairs = tree.query_pairs(r=max_cutoff)
 
     # 4. Build an Adjacency List (Graph)
@@ -384,8 +386,8 @@ def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=
             atom_marker_idx = i
             break
     
-    header = out[:atom_marker_idx]
-    footer = [l for l in out[atom_marker_idx:] if not l.startswith('ATOM')]
+    header = [l for l in out[:atom_marker_idx] if l.strip() != '']
+    footer = [l for l in out[atom_marker_idx:] if not l.startswith('ATOM') and l.strip() != '']
     
     # Replace "out" with fully rectified sequence
     out = header + final_ordered_atoms + footer
@@ -727,7 +729,7 @@ def calc_potential_alignment(scf_results_perfect, scf_results_defect):
 
 
 # NOTE: Draft
-def calc_chemical_potential(species, geometries, basis_set='6-31G', dispersion = False):
+def calc_chemical_potential(species, geometries, basis_set='6-31G', dispersion = False, xcfun=None):
     '''
     Compute isolated atom/molecule energy as chemical potential reference.
     Uses unrestricted SCF for open-shell species (Na, Cl).
@@ -743,6 +745,9 @@ def calc_chemical_potential(species, geometries, basis_set='6-31G', dispersion =
     else:
         scf_drv = vlx.ScfUnrestrictedDriver()
         mol.set_multiplicity(2)
+
+    if xcfun is not None:
+        scf_drv.xcfun = xcfun
 
     scf_drv.conv_thresh = 1.0e-6
     scf_drv.dispersion = dispersion
@@ -841,7 +846,7 @@ def calc_chemical_potential_h2o(basis_set='6-31G'):
     print(f'μ(H₂O) at HF/{basis_set} = {energy:.10f} Hartree')
     return energy
 
-def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_charge=0, qm_multiplicity=1, pe_model = 'SEP', npe_model='tip3p', dispersion = False):
+def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_charge=0, qm_multiplicity=1, pe_model = 'SEP', npe_model='tip3p', dispersion = False, basis_set='6-31G', xcfun=None, polarizable=False):
     print("Ensemble parser instance created.")
     ep = veloxchem.ensembleparser.EnsembleParser()   
     '''
@@ -860,6 +865,8 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
                            or None to disable NPE.
         qm_charge:         Net formal charge of the QM region.
         qm_multiplicity:   Spin multiplicity of the QM region (1 = singlet).
+        polarizable:       Whether to run full Polarizable Embedding or force purely
+                           electrostatic embedding by stripping polarizabilities.
 
     Returns:
         dict: SCF results dictionary from EnsembleDriver.compute(),
@@ -885,9 +892,32 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
     # Enable dispersion on the underlying SCF driver
     ed.update_settings(scf_dict={'dispersion': dispersion, 'max_iter': 150})
 
-    # TODO: Testa att sätta ed.xcfun = 'B3LYP'
-    #ed.xcfun = 'B3LYP'
-    scf_results = ed.compute(ensemble, basis_set = '6-31G', qm_charge=qm_charge, qm_multiplicity=qm_multiplicity)
+    if xcfun is not None:
+        ed.xcfun = xcfun
+
+    if not polarizable:
+        import os
+        import numpy as np
+        potdir = "pot_frames"
+        os.makedirs(potdir, exist_ok=True)
+        
+        # Strip polarizabilities from the pot files to force a purely electrostatic embedding
+        if any(np.asarray(s.get("pe_coords", [])).size > 0 for s in ensemble):
+            ed.write_pot_files(ensemble, outdir=potdir)
+            for snap in ensemble:
+                pot_path = os.path.join(potdir, f"pe_frame_{int(snap['frame']):06d}.pot")
+                if os.path.exists(pot_path):
+                    with open(pot_path, "r") as f:
+                        content = f.read()
+                    if "@polarizabilities" in content:
+                        content = content.split("@polarizabilities")[0]
+                    with open(pot_path, "w") as f:
+                        f.write(content)
+
+        scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity, potdir=potdir, write_pe_potfiles=False)
+    else:
+        scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity)
+    
     return scf_results
     
 # NOTE: Draft.
@@ -939,9 +969,9 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
                           chemical_potentials,
                           charge_state=0,
                           e_fermi=0.0, e_vbm=0.0, delta_v=0.0,
-                          pe_cutoff=None, npe_cutoff=None,
+                          pe_cutoff=None, npe_cutoff=None, pe_model = 'SEP', npe_model='tip3p',
                           charge_map=CHARGE_MAP, dispersion = False, 
-                          debug=False):
+                          debug=False, basis_set='6-31G', xcfun=None, polarizable=True):
     '''
     Van de Walle formation energy:
     E_f = E[def] - E[perf] + Σ nᵢμᵢ + q(E_F + E_VBM + ΔV)
@@ -958,6 +988,8 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
         e_fermi: Fermi energy in Ha (only matters when q≠0)
         e_vbm:   VBM energy in Ha (only matters when q≠0)
         delta_v:  potential alignment in Ha (only matters when q≠0)
+        polarizable: Whether to use full Polarizable Embedding or strip
+                     polarizabilities for a purely electrostatic embedding.
     '''
     HARTREE_TO_EV = 27.211386245988
 
@@ -965,9 +997,11 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
     print('1.\tPERFECT LATTICE')
     ch_p, mu_p = calc_charge_multiplicity(
         filename=filename_perf, qm_resname=qm_resname, charge_map=charge_map)
-    res_p = calc_energy_tot(filename=filename_perf, qm_resname=qm_resname,
+    res_p = calc_energy_tot(
+        filename=filename_perf, qm_resname=qm_resname,
         pe_cutoff=pe_cutoff, qm_charge=ch_p, qm_multiplicity=mu_p, npe_cutoff=npe_cutoff,
-        dispersion=dispersion)
+        pe_model = pe_model, npe_model = npe_model,
+        dispersion=dispersion, basis_set=basis_set, xcfun=xcfun, polarizable=polarizable)
     
     if debug:
         print(f'DEBUG: res_p {res_p}')
@@ -981,7 +1015,8 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
         filename=filename_defect, qm_resname=qm_resname, charge_map=charge_map)
     res_d = calc_energy_tot(filename=filename_defect, qm_resname=qm_resname,
         pe_cutoff=pe_cutoff, qm_charge=ch_d, qm_multiplicity=mu_d, npe_cutoff=npe_cutoff,
-        dispersion=dispersion)
+        pe_model = pe_model, npe_model = npe_model,
+        dispersion=dispersion, basis_set=basis_set, xcfun=xcfun, polarizable=polarizable)
         
     E_def = res_d['scf_all'][0][1]['scf_energy']
     print(f'  \tE_def  = {E_def:.10f} Ha (q={ch_d}, mult={mu_d})')

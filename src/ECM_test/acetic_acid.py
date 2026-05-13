@@ -1,14 +1,11 @@
 from methods import *
 
-PATH = 'benzene' 
-GENERAL_FILE_NAME = 'benzene'
+PATH = 'acetic_acid' 
+GENERAL_FILE_NAME = 'acetic_acid'
 PDB_FILE = f'{PATH}/{GENERAL_FILE_NAME}.pdb'
 CIF_FILE = f'{PATH}/{GENERAL_FILE_NAME}.cif'
 
 DEFECT_PDB_FILE = f'{PATH}/defect_{GENERAL_FILE_NAME}.pdb'
-
-TARGET_SIZE = 50
-TARGET_SHAPE = 'sc'
 
 # Change to make user input a molecule object. 
 GEOMETRIES = {
@@ -16,20 +13,43 @@ GEOMETRIES = {
     'Na':  "1\n\nNa 0.0 0.0 0.0\n",
     'Cl':  "1\n\nCl 0.0 0.0 0.0\n",
     'NaCl': "2\n\nNa 0.0 0.0 0.0\nCl 2.36 0.0 0.0\n",
-    'C6H6': "12\n\nC 0.0000 1.3975 0.0000\nH 0.0000 2.4839 0.0000\nC -1.2094 0.6987 0.0000\nH -2.1619 1.2419 0.0000\nC -1.2094 -0.6987 0.0000\nH -2.1619 -1.2419 0.0000\nC 0.0000 -1.3975 0.0000\nH 0.0000 -2.4839 0.0000\nC 1.2094 -0.6987 0.0000\nH 2.1619 -1.2419 0.0000\nC 1.2094 0.6987 0.0000\nH 2.1619 1.2419 0.0000\n"
+    'C6H6': "12\n\nC 0.0000 1.3975 0.0000\nH 0.0000 2.4839 0.0000\nC -1.2094 0.6987 0.0000\nH -2.1619 1.2419 0.0000\nC -1.2094 -0.6987 0.0000\nH -2.1619 -1.2419 0.0000\nC 0.0000 -1.3975 0.0000\nH 0.0000 -2.4839 0.0000\nC 1.2094 -0.6987 0.0000\nH 2.1619 -1.2419 0.0000\nC 1.2094 0.6987 0.0000\nH 2.1619 1.2419 0.0000\n",
+    'C2H4O2': """ 
+4
+
+C  0.000000  0.000000  0.000000
+H  1.084236  0.000000  0.000000
+H -0.052601  1.033013  0.000000
+O -1.067698 -0.277580  0.000000
+C -1.996996  0.475307  0.000000
+O -3.283128  0.032970  0.000000
+H -1.850003  1.542524  0.000000
+H -2.043785 -0.056849  1.002295
+H -2.043785 -0.056849 -1.002295
+"""
 }
 
-CHARGE_MAP = {'O': -2, 'C': 0, 'H': 0, 'Na': 1, 'Cl': -1}  
+# Change 'O': -2 to 'O': 0
+CHARGE_MAP = {'O': 0, 'C': 0, 'H': 0, 'Na': 1, 'Cl': -1}  
+
+TARGET_SIZE = 20
+TARGET_SHAPE = 'sc'
+
+CUBOID_THRESHOLD = 0.3
 
 PE_CUTOFF = 16.0
-CUBOID_THRESHOLD = 0.15
+
+# Default
+DEBUG = True
 BASIS_SET = '6-31G**'
 XC_FUNCTIONAL = 'B3LYP'
 DISPERSION = True
 
-DEBUG = True
+PE_MODEL = 'SEP'
+NPE_MODEL = 'tip3p'
+POLARIZABLE = False
 
-def benzene(
+def acetic_acid(
     path=PATH, 
     general_file_name=GENERAL_FILE_NAME, 
     pdb_file=PDB_FILE, 
@@ -38,12 +58,16 @@ def benzene(
     target_size=TARGET_SIZE, 
     target_shape=TARGET_SHAPE, 
     pe_cutoff=PE_CUTOFF, 
+    pe_model=PE_MODEL,
+    npe_cutoff=PE_CUTOFF, 
+    npe_model=PE_MODEL,
     cuboid_threshold=CUBOID_THRESHOLD, 
     basis_set=BASIS_SET, 
     xc_functional=XC_FUNCTIONAL, 
     dispersion=DISPERSION, 
     debug=DEBUG, 
-    charge_map=CHARGE_MAP
+    charge_map=CHARGE_MAP,
+    polarizable=POLARIZABLE
 ):
     # pyrefly: ignore [missing-import]
     from ase.build import bulk
@@ -55,8 +79,9 @@ def benzene(
     import os
 
     ##########################################################################################    
-    #                                Generate Benzene Supercell                                               
+    #                                Generate Acetic Acid Supercell                                               
     ##########################################################################################    
+
     unit_cell = read(cif_file)
     # plot_atoms(unit_cell)
 
@@ -71,17 +96,18 @@ def benzene(
 
     write(f'{pdb_file}', supercell)
 
+    # NOTE: Draft.
     collections = identify_connectivity_pdb(
         filename=pdb_file,
-        bonds_length=[('C', 'C', 1.6), ('C', 'H', 1.2)],
-        debug=debug
+        bonds_length=[('C', 'C', 1.6), ('C', 'H', 1.2), ('C', 'O', 1.5), ('O', 'H', 1.25)],
+        debug=False
     )
 
     qm_ids = process_pdb_advanced(
         filename = pdb_file,
-        mol_residues = {'BEN': [collections, 12]},
+        mol_residues = {'DMS': [collections, 8]},
         qm_resname = 'LIG',
-        qm_threshold = 0.1,
+        qm_threshold = 0.15,
         debug=debug,
         clear_unmatched = True
     )
@@ -103,6 +129,7 @@ def benzene(
     # ##########################################################################################    
     # #                                 COMPUTE FORMATION ENERGY                                          
     # ##########################################################################################    
+    
     # Construct XYZ geometry string directly from the extracted unrelaxed atoms (Option A)
     n_atoms = len(defect)
     defect_xyz = f"{n_atoms}\n\n"
@@ -111,13 +138,13 @@ def benzene(
 
     print("DEBUG: Derived real chemical potential geometry from extracted defect atoms.")
 
-    # Compute μ(C6H6) using the EXACT same unrelaxed geometry found inside the supercell
+    # Compute μ(C2H4O2) using the EXACT same unrelaxed geometry found inside the supercell
     mu = calc_chemical_potential(
         species='CUSTOM', 
         basis_set=basis_set, 
         geometries={'CUSTOM': defect_xyz},
         dispersion = dispersion,
-        xcfun = xc_functional,
+        xcfun = xc_functional
     )
 
     # Compute formation energy
@@ -125,16 +152,20 @@ def benzene(
         filename_perf=pdb_file,
         filename_defect=defect_pdb_file,
         qm_resname='LIG',
-        chemical_potentials = {'BEN': (1, mu)},
+        chemical_potentials = {'DMS': (1, mu)},
         dispersion = dispersion,
         debug=debug,
         pe_cutoff=pe_cutoff,
+        npe_cutoff=npe_cutoff,
+        pe_model=pe_model, 
+        npe_model=npe_model, 
+        polarizable=polarizable,
         charge_map=charge_map,
-        xcfun = xc_functional,
-        basis_set = basis_set
+        basis_set=basis_set,
+        xcfun = xc_functional
     )
     
     return E_f
 
 if __name__ == '__main__':
-    benzene(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=12, dispersion=True, xc_functional='B3LYP', debug=True)
+    acetic_acid(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=16, pe_model='SEP', npe_model=None, polarizable=False, dispersion=True, xc_functional='B3LYP', debug=True)
