@@ -168,4 +168,4 @@ def acetic_acid(
     return E_f
 
 if __name__ == '__main__':
-    acetic_acid(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=16, pe_model='SEP', npe_model=None, polarizable=False, dispersion=True, xc_functional='B3LYP', debug=True)
+    acetic_acid(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=16, pe_model='SEP', npe_model=None, polarizable=False, dispersion=False, xc_functional='B3LYP', debug=True)

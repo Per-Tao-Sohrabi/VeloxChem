@@ -889,8 +889,8 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
     elif npe_model != None:
         ed.set_env_models(npe_model = npe_model)
 
-    # Enable dispersion on the underlying SCF driver
-    ed.update_settings(scf_dict={'dispersion': dispersion, 'max_iter': 150})
+    # Enable dispersion on the underlying SCF driver via method_dict
+    ed.update_settings(scf_dict={'max_iter': 150}, method_dict={'dispersion': dispersion})
 
     if xcfun is not None:
         ed.xcfun = xcfun
