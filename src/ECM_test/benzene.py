@@ -71,13 +71,13 @@ def benzene(
 
     write(f'{pdb_file}', supercell)
 
-    collections = identify_connectivity_pdb(
+    collections = identify_connectivity_pdb( # Joins atoms into molecules. 
         filename=pdb_file,
         bonds_length=[('C', 'C', 1.6), ('C', 'H', 1.2)],
         debug=debug
     )
 
-    qm_ids = process_pdb_advanced(
+    qm_ids = process_pdb_advanced( # Assigns qm sites. 
         filename = pdb_file,
         mol_residues = {'BEN': [collections, 12]},
         qm_resname = 'LIG',
@@ -86,7 +86,7 @@ def benzene(
         clear_unmatched = True
     )
 
-    defect, up_candidate_qm = del_atoms_pdb(      
+    defect, up_candidate_qm = del_atoms_pdb( # Removes unassigned atoms. 
         filename=pdb_file,
         output_filename=defect_pdb_file,
         delete_indecies=qm_ids[0], # Remove the first index collection. 
@@ -103,6 +103,7 @@ def benzene(
     # ##########################################################################################    
     # #                                 COMPUTE FORMATION ENERGY                                          
     # ##########################################################################################    
+    
     # Construct XYZ geometry string directly from the extracted unrelaxed atoms (Option A)
     n_atoms = len(defect)
     defect_xyz = f"{n_atoms}\n\n"
@@ -137,4 +138,13 @@ def benzene(
     return E_f
 
 if __name__ == '__main__':
-    benzene(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=12, dispersion=True, xc_functional='B3LYP', debug=True)
+    benzene(
+            basis_set='6-31G**', 
+            cuboid_threshold=0.15, 
+            target_size=30, 
+            target_shape='sc',
+            pe_cutoff=12, 
+            dispersion=True, 
+            xc_functional='B3LYP', 
+            debug=True
+        )

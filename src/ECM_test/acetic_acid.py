@@ -107,7 +107,7 @@ def acetic_acid(
         filename = pdb_file,
         mol_residues = {'DMS': [collections, 8]},
         qm_resname = 'LIG',
-        qm_threshold = 0.15,
+        qm_threshold = cuboid_threshold,
         debug=debug,
         clear_unmatched = True
     )
@@ -168,4 +168,17 @@ def acetic_acid(
     return E_f
 
 if __name__ == '__main__':
-    acetic_acid(basis_set='6-31G**', cuboid_threshold=0.2, target_size=50, target_shape='sc', pe_cutoff=16, pe_model='SEP', npe_model=None, polarizable=False, dispersion=False, xc_functional='B3LYP', debug=True)
+    acetic_acid(
+            basis_set='6-31G**', 
+            cuboid_threshold=0.15, 
+            target_size=50, 
+            target_shape='sc', 
+            pe_cutoff=16, 
+            pe_model='SEP', 
+            npe_model=None, 
+            polarizable=False, 
+            dispersion=False, 
+            xc_functional='B3LYP', 
+            debug=True
+        )
+    

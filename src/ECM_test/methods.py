@@ -29,8 +29,6 @@ GEOMETRIES = {
 
 PossiblePhases = Literal['1h', '1c']    
 def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_filename, target_supercell_shape, target_supercell_size, write_to_pdb = True, plot = True):
-    super_cell_filename = f'{phase}x{cell_dimensions[0]}{cell_dimensions[1]}{cell_dimensions[2]}_supercell'
-    # Generate unit.
     '''
     Generate an ice supercell from a unit cell using genice2 and ASE.
 
@@ -48,6 +46,8 @@ def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_f
         write_to_pdb:            If True, write the supercell to a PDB file.
         plot:                    If True, display a plot of the supercell atoms.
     '''
+    super_cell_filename = f'{phase}x{cell_dimensions[0]}{cell_dimensions[1]}{cell_dimensions[2]}_supercell'
+    # Generate unit.
     os.system(f'mkdir {path}')
     # os.system('ls')
     os.system(f'genice2 --rep {cell_dimensions[0]} {cell_dimensions[1]} {cell_dimensions[2]} {phase} --format cif > {path}/{unit_cell_filename}.cif')
@@ -75,8 +75,6 @@ def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_f
 
 # TODO: Generalize this function to output more geometry parameters if necessary
 def get_space_dimensions(filename = None):
-    
-    supercell = read(f'{filename}')
     '''
     Determine the maximum spatial extent of a crystal structure.
 
@@ -90,6 +88,7 @@ def get_space_dimensions(filename = None):
     Returns:
         list: [max_x, max_y, max_z] coordinates in Angstroms.
     '''
+    supercell = read(f'{filename}')
     np_supercell = np.array(supercell)
 
     x = 0
@@ -162,6 +161,26 @@ def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=T
 
 
 def identify_connectivity_pdb(filename, bonds_length, debug=False):
+    '''
+    Identify molecular connectivity in a PDB file using bond-length cutoffs.
+
+    Reads atomic positions from the given structure file, builds a spatial
+    KD-tree for efficient neighbor lookup, and constructs an adjacency graph
+    based on element-pair bond-length rules. Connected components (molecules)
+    are extracted via breadth-first search.
+
+    Args:
+        filename:      Path to the structure file (PDB, CIF, etc.).
+        bonds_length:  List of (element1, element2, max_distance) tuples
+                       defining bond criteria, e.g.
+                       [('C', 'H', 1.2), ('C', 'C', 1.6)].
+        debug:         If True, print diagnostic information.
+
+    Returns:
+        list[list[int]]: A list of molecules, where each molecule is a list
+                         of 0-based atom indices belonging to that connected
+                         component.
+    '''
     import numpy as np
     from ase.io import read
     from scipy.spatial import cKDTree
@@ -236,6 +255,33 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
     return collections
 
 def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=0.1, debug = False, clear_unmatched = False):
+    '''
+    Process a PDB file with connectivity-aware residue assignment.
+
+    Iterates over molecular collections (from identify_connectivity_pdb),
+    removes incomplete molecules if clear_unmatched is set, assigns QM-region
+    residue names to molecules whose centroid falls within the threshold
+    cuboid around the cell center, and reorders ATOM records so each residue
+    is contiguous with consistent internal ordering.
+
+    Args:
+        filename:         Path to the PDB file (modified in place).
+        mol_residues:     Dict mapping resname to (collections, expected_length),
+                          where collections is a list of atom-index lists from
+                          identify_connectivity_pdb, and expected_length is the
+                          number of atoms per intact molecule.
+        qm_resname:       Residue name to assign to QM-region molecules
+                          (default 'LIG').
+        qm_threshold:     Fractional distance from center defining the QM
+                          cuboid region (0.0–0.5).
+        debug:            If True, print diagnostic information.
+        clear_unmatched:  If True, delete atoms belonging to incomplete
+                          molecules from the output.
+
+    Returns:
+        list[list[int]]: Lists of 0-based atom indices for each QM-region
+                         residue in the final reordered file.
+    '''
     from ase.io import read
     
     # Access each molecular residue, Identify lneght. Remove any indcies not in collection. 
@@ -847,8 +893,6 @@ def calc_chemical_potential_h2o(basis_set='6-31G'):
     return energy
 
 def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_charge=0, qm_multiplicity=1, pe_model = 'SEP', npe_model='tip3p', dispersion = False, basis_set='6-31G', xcfun=None, polarizable=False):
-    print("Ensemble parser instance created.")
-    ep = veloxchem.ensembleparser.EnsembleParser()   
     '''
     Compute the total SCF energy of a crystal structure using QM/PE embedding.
 
@@ -865,6 +909,11 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
                            or None to disable NPE.
         qm_charge:         Net formal charge of the QM region.
         qm_multiplicity:   Spin multiplicity of the QM region (1 = singlet).
+        pe_model:          Name of the PE model (default 'SEP').
+        npe_model:         Name of the NPE model (default 'tip3p').
+        dispersion:        If True, enable dispersion correction.
+        basis_set:         Basis set name (default '6-31G').
+        xcfun:             Exchange-correlation functional name, or None for HF.
         polarizable:       Whether to run full Polarizable Embedding or force purely
                            electrostatic embedding by stripping polarizabilities.
 
@@ -873,6 +922,8 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
               containing energies accessible via
               result['scf_all'][snapshot][frame]['scf_energy'].
     '''
+    print("Ensemble parser instance created.")
+    ep = veloxchem.ensembleparser.EnsembleParser()   
     ed = veloxchem.ensembledriver.EnsembleDriver()
     
     ensemble = ep.structures(
@@ -924,6 +975,30 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
 def calc_energy_tot_relaxed(filename, qm_resname, pe_cutoff=6.0, 
                             qm_charge=0, qm_multiplicity=1,
                             basis_set='6-31G'):
+    '''
+    Compute the total energy after geometry relaxation with PE embedding.
+
+    Parses the crystal structure, extracts the QM region, sets up polarizable
+    embedding using the SEP/TIP3P models, and runs a geometry optimization.
+    Returns the relaxed SCF energy and optimization results.
+
+    Note:
+        Draft implementation. SCF convergence issues have been observed.
+
+    Args:
+        filename:          Path to the PDB trajectory file.
+        qm_resname:        Residue name identifying the QM region (e.g. 'LIG').
+        pe_cutoff:         Cutoff distance (Å) for polarizable embedding.
+        qm_charge:         Net formal charge of the QM region.
+        qm_multiplicity:   Spin multiplicity of the QM region (1 = singlet).
+        basis_set:         Basis set name (default '6-31G').
+
+    Returns:
+        tuple: (energy, opt_results)
+            - energy (float): Final SCF energy in Hartree after relaxation.
+            - opt_results (dict): Full optimization results from
+              OptimizationDriver.compute().
+    '''
     import veloxchem as vlx
     
     # 1. Parse the structure (reuse EnsembleParser for coordinate extraction)
