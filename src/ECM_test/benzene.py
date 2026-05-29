@@ -1,4 +1,5 @@
 from methods import *
+import time
 
 PATH = 'benzene' 
 GENERAL_FILE_NAME = 'benzene'
@@ -42,6 +43,7 @@ def benzene(
     basis_set=BASIS_SET, 
     xc_functional=XC_FUNCTIONAL, 
     dispersion=DISPERSION, 
+    polarizable=False,
     debug=DEBUG, 
     charge_map=CHARGE_MAP
 ):
@@ -71,27 +73,31 @@ def benzene(
 
     write(f'{pdb_file}', supercell)
 
-    collections = identify_connectivity_pdb( # Joins atoms into molecules. 
+    collections_dict = identify_connectivity_pdb( # Joins atoms into molecules. 
         filename=pdb_file,
         bonds_length=[('C', 'C', 1.6), ('C', 'H', 1.2)],
         debug=debug
     )
+    collections = collections_dict['data']
 
-    qm_ids = process_pdb_advanced( # Assigns qm sites. 
+    qm_ids_dict = process_pdb_advanced( # Assigns qm sites. 
         filename = pdb_file,
         mol_residues = {'BEN': [collections, 12]},
         qm_resname = 'LIG',
-        qm_threshold = 0.1,
+        qm_threshold = cuboid_threshold,
         debug=debug,
         clear_unmatched = True
     )
+    qm_ids = qm_ids_dict['data']
 
-    defect, up_candidate_qm = del_atoms_pdb( # Removes unassigned atoms. 
+    defect_dict = del_atoms_pdb( # Removes unassigned atoms. 
         filename=pdb_file,
         output_filename=defect_pdb_file,
         delete_indecies=qm_ids[0], # Remove the first index collection. 
         qm_resname='LIG'
     )
+    defect, up_candidate_qm = defect_dict['data'][0], defect_dict['data'][1]
+
 
     print(f'DEBUG: deleting atoms at indices: {qm_ids[0]}')
     print(f'DEBUG: Updated qm list {up_candidate_qm}')
@@ -104,7 +110,7 @@ def benzene(
     # #                                 COMPUTE FORMATION ENERGY                                          
     # ##########################################################################################    
     
-    # Construct XYZ geometry string directly from the extracted unrelaxed atoms (Option A)
+    # Construct XYZ geometry string directly from the extracted unrelaxed atoms
     n_atoms = len(defect)
     defect_xyz = f"{n_atoms}\n\n"
     for symbol, pos in zip(defect.get_chemical_symbols(), defect.get_positions()):
@@ -113,13 +119,14 @@ def benzene(
     print("DEBUG: Derived real chemical potential geometry from extracted defect atoms.")
 
     # Compute μ(C6H6) using the EXACT same unrelaxed geometry found inside the supercell
-    mu = calc_chemical_potential(
+    mu_dict = calc_chemical_potential(
         species='CUSTOM', 
         basis_set=basis_set, 
         geometries={'CUSTOM': defect_xyz},
         dispersion = dispersion,
         xcfun = xc_functional,
     )
+    mu = mu_dict['data']
 
     # Compute formation energy
     E_f = calc_formation_energy( 
@@ -128,6 +135,7 @@ def benzene(
         qm_resname='LIG',
         chemical_potentials = {'BEN': (1, mu)},
         dispersion = dispersion,
+        polarizable=polarizable,
         debug=debug,
         pe_cutoff=pe_cutoff,
         charge_map=charge_map,
@@ -138,13 +146,19 @@ def benzene(
     return E_f
 
 if __name__ == '__main__':
+    print("Running benzene test...")
+    tic = time.perf_counter()
     benzene(
             basis_set='6-31G**', 
             cuboid_threshold=0.15, 
-            target_size=30, 
+            target_size=50, 
             target_shape='sc',
-            pe_cutoff=12, 
-            dispersion=True, 
+            pe_cutoff=16, 
+            dispersion=False, 
+            polarizable=False, 
             xc_functional='B3LYP', 
             debug=True
         )
+    toc = time.perf_counter()
+    execution_time = toc - tic
+    print(f"Execution time: {execution_time:.2f} seconds")

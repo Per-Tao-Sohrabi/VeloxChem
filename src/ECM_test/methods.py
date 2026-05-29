@@ -188,8 +188,6 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
 
     # 1. Read the supercell
     supercell = read(filename)
-    box_dimensions = supercell.cell.lengths()
-    positions = np.mod(supercell.positions, box_dimensions)
     symbols = supercell.get_chemical_symbols()
 
     # 2. Parse bond lengths into a hash map (dictionary) for O(1) lookups
@@ -202,26 +200,23 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
         bond_cutoffs[(sym2, sym1)] = length  # Account for both directions
         max_cutoff = max(max_cutoff, length) # Find the absolute longest bond
 
-    # 3. Use a KD-Tree to find all pairs within the maximum possible cutoff
-    # This completely eliminates the O(N^2) nested loop bottleneck.
-    box_dimensions = supercell.cell.lengths()
-    tree = cKDTree(positions, boxsize=box_dimensions)
-    pairs = tree.query_pairs(r=max_cutoff)
+    # 3. Find neighbor pairs within the maximum possible cutoff using ASE neighbor_list.
+    # This correctly handles arbitrary periodic boundary conditions (including non-orthogonal cells).
+    from ase.neighborlist import neighbor_list
+    u_idx, v_idx, dists = neighbor_list('ijd', supercell, max_cutoff)
 
     # 4. Build an Adjacency List (Graph)
     graph = defaultdict(list)
     
-    for i, j in pairs:
-        sym_i, sym_j = symbols[i], symbols[j]
-        
-        # Check if this specific pair of elements has a defined bond rule
-        if (sym_i, sym_j) in bond_cutoffs:
-            dist = np.linalg.norm(positions[i] - positions[j])
+    for u, v, dist in zip(u_idx, v_idx, dists):
+        if u < v:  # Filter to avoid duplicate undirected graph edges
+            sym_u, sym_v = symbols[u], symbols[v]
             
-            # If distance is within the specific bond length, connect them
-            if dist <= bond_cutoffs[(sym_i, sym_j)]:
-                graph[i].append(j)
-                graph[j].append(i)
+            # Check if this specific pair of elements has a defined bond rule
+            if (sym_u, sym_v) in bond_cutoffs:
+                if dist <= bond_cutoffs[(sym_u, sym_v)]:
+                    graph[u].append(v)
+                    graph[v].append(u)
 
     # 5. Find Connected Components (Collections of atoms)
     # This groups the connected graph into separate molecules/clusters
@@ -252,7 +247,7 @@ def identify_connectivity_pdb(filename, bonds_length, debug=False):
         print(f"Total atoms: {len(supercell)}")
         print(f"Total separate collections found: {len(collections)}")
 
-    return collections
+    return {'data': collections, 'metadata': {'bonds_length': bonds_length, 'total_atoms': len(supercell), 'total_collections': len(collections)}}
 
 def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=0.1, debug = False, clear_unmatched = False):
     '''
@@ -372,12 +367,21 @@ def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=
                 if debug: print(f'DEBUG: Starting process for {collect}')
                 # 3. FIND COLLECTION CENTER
 
-                
+                # Calculate the mean position of the collection to find the centroid.
                 positions = [crystal[atom_idx].position for atom_idx in collect]
-                totle_pos = np.zeros(3)
-                for i in positions:
-                    totle_pos += i
-                mean_pos = totle_pos / len(positions)
+                ref_pos = positions[0]
+                box = crystal.cell.lengths()
+                unwrapped = [ref_pos]
+                for pos in positions[1:]:
+                    diff = pos - ref_pos
+                    # Wrap differences to [-L/2, L/2]
+                    for ax in range(3):
+                        if diff[ax] > box[ax] / 2:
+                            diff[ax] -= box[ax]
+                        elif diff[ax] < -box[ax] / 2:
+                            diff[ax] += box[ax]
+                    unwrapped.append(ref_pos + diff)
+                mean_pos = np.mean(unwrapped, axis=0)
                 
                 if (
                     midpoint[0] - x*qm_threshold < mean_pos[0] < midpoint[0] + x*qm_threshold and
@@ -455,22 +459,7 @@ def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=
                 final_qm_map[injected_resid].append(atom_count)
             atom_count += 1
             
-    return list(final_qm_map.values())
-
-
-                
-            # totle_pos = np.zeros(3)
-            # for i in colect:
-            #     totle_pos += i.get_positions()
-            # mean_pos = totle_pos / len(colect)
-
-            
-            
-
-                
-
-    
-    
+    return {'data': list(final_qm_map.values()), 'metadata': {'qm_resname': qm_resname, 'qm_threshold': qm_threshold, 'final_qm_map': final_qm_map, 'delete_indices': delete_indices}}
     
 
 def process_pdb(filename, patterns, qm_ids=None, qm_resname=None):
@@ -686,7 +675,7 @@ def del_atoms_pdb(filename, qm_resname, output_filename, delete_indecies):
     
     with open(output_filename, 'w') as f:
         f.writelines(out)
-    return defect, new_qm_candidates
+    return {'data': (defect, new_qm_candidates), 'metadata': {'qm_resname': qm_resname, 'delete_indices': delete_indecies}}
 
 def calc_charge_multiplicity(filename, qm_resname, charge_map, atomic_numbers=ATOMIC_NUMBERS):
     """
@@ -729,7 +718,7 @@ def calc_charge_multiplicity(filename, qm_resname, charge_map, atomic_numbers=AT
     # Lowest-spin assumption: even e⁻ → singlet (1), odd e⁻ → doublet (2)
     qm_multiplicity = 1 if actual_electrons % 2 == 0 else 2
 
-    return qm_charge, qm_multiplicity
+    return {'data': (qm_charge, qm_multiplicity), 'metadata': {'actual_electrons': actual_electrons}}
 
 # NOTE: Draft
 def calc_ernergy_fermi(filename):
@@ -800,7 +789,7 @@ def calc_chemical_potential(species, geometries, basis_set='6-31G', dispersion =
     scf_drv.compute(mol, bas)
     energy = scf_drv.get_scf_energy()
     print(f'μ({species}) at HF/{basis_set} = {energy:.10f} Hartree')
-    return energy
+    return {'data': energy, 'metadata': {'species': species, 'basis_set': basis_set}}
 
 
 # NOTE: Draft
@@ -940,13 +929,19 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
     elif npe_model != None:
         ed.set_env_models(npe_model = npe_model)
 
-    # Enable dispersion on the underlying SCF driver via method_dict
-    ed.update_settings(scf_dict={'max_iter': 150}, method_dict={'dispersion': dispersion})
+    # Build scf_options dynamically based on EnsembleDriver API support
+    import inspect
+    sig = inspect.signature(ed.compute)
+    has_scf_options = 'scf_options' in sig.parameters
 
+    scf_opts = {'max_iter': 150, 'dispersion': dispersion}
     if xcfun is not None:
-        ed.xcfun = xcfun
+        scf_opts['xcfun'] = xcfun
 
-    if not polarizable:
+    if not has_scf_options:
+        ed.update_settings(scf_dict=scf_opts)
+
+    if not polarizable: # Strip polarization from the pot file. 
         import os
         import numpy as np
         potdir = "pot_frames"
@@ -965,9 +960,15 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
                     with open(pot_path, "w") as f:
                         f.write(content)
 
-        scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity, potdir=potdir, write_pe_potfiles=False)
+        if has_scf_options:
+            scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity, scf_options=scf_opts, potdir=potdir, write_pe_potfiles=False)
+        else:
+            scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity, potdir=potdir, write_pe_potfiles=False)
     else:
-        scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity)
+        if has_scf_options:
+            scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity, scf_options=scf_opts)
+        else:
+            scf_results = ed.compute(ensemble, basis_set=basis_set, qm_charge=qm_charge, qm_multiplicity=qm_multiplicity)
     
     return scf_results
     
@@ -1043,10 +1044,20 @@ def calc_energy_tot_relaxed(filename, qm_resname, pe_cutoff=6.0,
 def calc_formation_energy(filename_perf, filename_defect, qm_resname,
                           chemical_potentials,
                           charge_state=0,
-                          e_fermi=0.0, e_vbm=0.0, delta_v=0.0,
-                          pe_cutoff=None, npe_cutoff=None, pe_model = 'SEP', npe_model='tip3p',
-                          charge_map=CHARGE_MAP, dispersion = False, 
-                          debug=False, basis_set='6-31G', xcfun=None, polarizable=True):
+                          e_fermi=0.0, 
+                          e_vbm=0.0, 
+                          delta_v=0.0,
+                          pe_cutoff=None, 
+                          npe_cutoff=None, 
+                          pe_model = 'SEP', 
+                          npe_model='tip3p',
+                          charge_map=CHARGE_MAP, 
+                          dispersion = False, 
+                          debug=False, 
+                          basis_set='6-31G', 
+                          xcfun=None, 
+                          polarizable=True
+                          ):
     '''
     Van de Walle formation energy:
     E_f = E[def] - E[perf] + Σ nᵢμᵢ + q(E_F + E_VBM + ΔV)
@@ -1070,8 +1081,9 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
 
     # 1. Perfect lattice
     print('1.\tPERFECT LATTICE')
-    ch_p, mu_p = calc_charge_multiplicity(
+    ch_mu_dict = calc_charge_multiplicity(
         filename=filename_perf, qm_resname=qm_resname, charge_map=charge_map)
+    ch_p, mu_p = ch_mu_dict['data']
     res_p = calc_energy_tot(
         filename=filename_perf, qm_resname=qm_resname,
         pe_cutoff=pe_cutoff, qm_charge=ch_p, qm_multiplicity=mu_p, npe_cutoff=npe_cutoff,
@@ -1086,8 +1098,9 @@ def calc_formation_energy(filename_perf, filename_defect, qm_resname,
 
     # 2. Defect lattice  
     print('2.\tDEFECT LATTICE')
-    ch_d, mu_d = calc_charge_multiplicity(
+    ch_mu_dict = calc_charge_multiplicity(
         filename=filename_defect, qm_resname=qm_resname, charge_map=charge_map)
+    ch_d, mu_d = ch_mu_dict['data']
     res_d = calc_energy_tot(filename=filename_defect, qm_resname=qm_resname,
         pe_cutoff=pe_cutoff, qm_charge=ch_d, qm_multiplicity=mu_d, npe_cutoff=npe_cutoff,
         pe_model = pe_model, npe_model = npe_model,

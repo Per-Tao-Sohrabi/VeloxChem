@@ -1,4 +1,5 @@
 from methods import *
+import time
 
 PATH = 'acetic_acid' 
 GENERAL_FILE_NAME = 'acetic_acid'
@@ -96,14 +97,14 @@ def acetic_acid(
 
     write(f'{pdb_file}', supercell)
 
-    # NOTE: Draft.
-    collections = identify_connectivity_pdb(
+    collections_dict = identify_connectivity_pdb(
         filename=pdb_file,
         bonds_length=[('C', 'C', 1.6), ('C', 'H', 1.2), ('C', 'O', 1.5), ('O', 'H', 1.25)],
         debug=False
     )
+    collections = collections_dict['data']
 
-    qm_ids = process_pdb_advanced(
+    qm_ids_dict = process_pdb_advanced(
         filename = pdb_file,
         mol_residues = {'DMS': [collections, 8]},
         qm_resname = 'LIG',
@@ -111,13 +112,16 @@ def acetic_acid(
         debug=debug,
         clear_unmatched = True
     )
+    qm_ids = qm_ids_dict['data']
 
-    defect, up_candidate_qm = del_atoms_pdb(      
+
+    defect_dict = del_atoms_pdb(      
         filename=pdb_file,
         output_filename=defect_pdb_file,
         delete_indecies=qm_ids[0], # Remove the first index collection. 
         qm_resname='LIG'
     )
+    defect, up_candidate_qm = defect_dict['data'][0], defect_dict['data'][1]
 
     print(f'DEBUG: deleting atoms at indices: {qm_ids[0]}')
     print(f'DEBUG: Updated qm list {up_candidate_qm}')
@@ -139,13 +143,14 @@ def acetic_acid(
     print("DEBUG: Derived real chemical potential geometry from extracted defect atoms.")
 
     # Compute μ(C2H4O2) using the EXACT same unrelaxed geometry found inside the supercell
-    mu = calc_chemical_potential(
+    mu_dict = calc_chemical_potential(
         species='CUSTOM', 
         basis_set=basis_set, 
         geometries={'CUSTOM': defect_xyz},
         dispersion = dispersion,
         xcfun = xc_functional
     )
+    mu = mu_dict['data']
 
     # Compute formation energy
     E_f = calc_formation_energy( 
@@ -168,6 +173,8 @@ def acetic_acid(
     return E_f
 
 if __name__ == '__main__':
+    print("Running acetic acid test...")
+    tic = time.perf_counter()
     acetic_acid(
             basis_set='6-31G**', 
             cuboid_threshold=0.15, 
@@ -181,4 +188,6 @@ if __name__ == '__main__':
             xc_functional='B3LYP', 
             debug=True
         )
-    
+    toc = time.perf_counter()
+    execution_time = toc - tic
+    print(f"Execution time: {execution_time:.2f} seconds")
