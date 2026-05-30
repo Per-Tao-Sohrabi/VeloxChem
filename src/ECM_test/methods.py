@@ -76,35 +76,19 @@ def generate_ice_block(path, phase: PossiblePhases, cell_dimensions, unit_cell_f
 # TODO: Generalize this function to output more geometry parameters if necessary
 def get_space_dimensions(filename = None):
     '''
-    Determine the maximum spatial extent of a crystal structure.
+    Determine the cell dimensions of a crystal structure.
 
-    Reads the structure from the given file and finds the maximum x, y, z
-    coordinates among all atoms, which approximate the bounding box of the
-    supercell.
+    Reads the structure from the given file and returns the lengths of the unit cell vectors.
 
     Args:
         filename:  Path to the structure file (PDB, CIF, etc.).
 
     Returns:
-        list: [max_x, max_y, max_z] coordinates in Angstroms.
+        list: [a, b, c] cell lengths in Angstroms.
     '''
+    from ase.io import read
     supercell = read(f'{filename}')
-    np_supercell = np.array(supercell)
-
-    x = 0
-    y = 0
-    z = 0
-    for i in np_supercell:
-        ix, iy, iz = i.position
-        if ix > x:
-            x = ix
-        if iy > y:
-            y = iy
-        if iz > z:
-            z = iz
-        # print(ix)
-    # print(x, y, z)
-    return [x, y, z]
+    return list(supercell.cell.lengths())
 
 # TODO: Simplify to output all indecies in QM region. 
 def get_centeroid_region(filename, patterns, cuboid_threshold=None, print_ctrl=True, debug=False):
@@ -368,20 +352,16 @@ def process_pdb_advanced(filename, mol_residues, qm_resname='LIG', qm_threshold=
                 # 3. FIND COLLECTION CENTER
 
                 # Calculate the mean position of the collection to find the centroid.
-                positions = [crystal[atom_idx].position for atom_idx in collect]
-                ref_pos = positions[0]
-                box = crystal.cell.lengths()
-                unwrapped = [ref_pos]
-                for pos in positions[1:]:
-                    diff = pos - ref_pos
-                    # Wrap differences to [-L/2, L/2]
-                    for ax in range(3):
-                        if diff[ax] > box[ax] / 2:
-                            diff[ax] -= box[ax]
-                        elif diff[ax] < -box[ax] / 2:
-                            diff[ax] += box[ax]
-                    unwrapped.append(ref_pos + diff)
-                mean_pos = np.mean(unwrapped, axis=0)
+                # Use fractional coordinates for correct handling of non-orthogonal cells.
+                scaled_positions = crystal.get_scaled_positions(wrap=False)
+                ref_pos_scaled = scaled_positions[collect[0]]
+                unwrapped_scaled = [ref_pos_scaled]
+                for atom_idx in collect[1:]:
+                    diff = scaled_positions[atom_idx] - ref_pos_scaled
+                    diff_wrapped = diff - np.round(diff)
+                    unwrapped_scaled.append(ref_pos_scaled + diff_wrapped)
+                mean_scaled = np.mean(unwrapped_scaled, axis=0)
+                mean_pos = crystal.cell.cartesian_positions(mean_scaled)
                 
                 if (
                     midpoint[0] - x*qm_threshold < mean_pos[0] < midpoint[0] + x*qm_threshold and
@@ -555,61 +535,78 @@ def minimum_image_unwrap(filename):
     """
     Unwrap molecules split across periodic boundaries in a PDB file.
     For each residue, shifts all atoms to be within half a cell length
-    of the first atom in that residue (the minimum image convention).
+    of the first atom in that residue (the minimum image convention),
+    using fractional coordinates to handle non-orthogonal unit cells.
     
     Must be called AFTER process_pdb has assigned correct residue numbers.
     Modifies the file in place.
     """
+    import numpy as np
+    from ase.io import read
+    from ase.cell import Cell
+
     with open(filename) as f:
         lines = f.readlines()
 
     # Extract cell dimensions from the CRYST1 record
-    cell = None
+    cellpar = None
     for line in lines:
         if line.startswith('CRYST1'):
-            cell = [float(line[6:15]), float(line[15:24]), float(line[24:33])]
+            cellpar = [
+                float(line[6:15]), float(line[15:24]), float(line[24:33]),
+                float(line[33:40]), float(line[40:47]), float(line[47:54])
+            ]
             break
 
-    if cell is None:
+    if cellpar is None:
         print('No CRYST1 record found. Cannot unwrap.')
         return
 
+    cell_obj = Cell.fromcellpar(cellpar)
+    
+    # Read the atoms and set the correct cell object
+    atoms = read(filename)
+    atoms.set_cell(cell_obj)
+
     # Group ATOM lines by (chain ID, residue number)
     residues = {}
-    for i, line in enumerate(lines):
+    atom_idx = 0
+    for line in lines:
         if line.startswith('ATOM') or line.startswith('HETATM'):
             key = line[21:26]  # chain ID + residue seq number
             if key not in residues:
                 residues[key] = []
-            residues[key].append(i)
+            residues[key].append(atom_idx)
+            atom_idx += 1
 
-    # For each residue, unwrap atoms relative to the first atom
+    # Get fractional coordinates
+    scaled_positions = atoms.get_scaled_positions(wrap=False)
+
     n_fixed = 0
-    for key, atom_indices in residues.items():
-        if len(atom_indices) < 2:
+    for key, indices in residues.items():
+        if len(indices) < 2:
             continue
+        
+        ref_idx = indices[0]
+        ref_scaled = scaled_positions[ref_idx]
 
-        # Reference position = first atom in the residue (e.g. the Oxygen)
-        ref_line = lines[atom_indices[0]]
-        ref_pos = [float(ref_line[30:38]), float(ref_line[38:46]), float(ref_line[46:54])]
-
-        for idx in atom_indices[1:]:
-            line = lines[idx]
-            pos = [float(line[30:38]), float(line[38:46]), float(line[46:54])]
-            fixed = False
-
-            for ax in range(3):
-                diff = pos[ax] - ref_pos[ax]
-                if diff > cell[ax] / 2:
-                    pos[ax] -= cell[ax]
-                    fixed = True
-                elif diff < -cell[ax] / 2:
-                    pos[ax] += cell[ax]
-                    fixed = True
-
-            if fixed:
-                lines[idx] = line[:30] + f'{pos[0]:8.3f}{pos[1]:8.3f}{pos[2]:8.3f}' + line[54:]
+        for idx in indices[1:]:
+            diff = scaled_positions[idx] - ref_scaled
+            diff_wrapped = diff - np.round(diff)
+            if not np.allclose(diff, diff_wrapped):
+                scaled_positions[idx] = ref_scaled + diff_wrapped
                 n_fixed += 1
+
+    atoms.set_scaled_positions(scaled_positions)
+    cart_positions = atoms.get_positions()
+
+    # Update coordinates in-place in original PDB lines
+    atom_idx = 0
+    for i, line in enumerate(lines):
+        if line.startswith('ATOM') or line.startswith('HETATM'):
+            pos = cart_positions[atom_idx]
+            lines[i] = line[:30] + f'{pos[0]:8.3f}{pos[1]:8.3f}{pos[2]:8.3f}' + line[54:]
+            atom_idx += 1
 
     with open(filename, 'w') as f:
         f.writelines(lines)
@@ -934,12 +931,16 @@ def calc_energy_tot(filename, qm_resname, pe_cutoff=6.0, npe_cutoff=None, qm_cha
     sig = inspect.signature(ed.compute)
     has_scf_options = 'scf_options' in sig.parameters
 
-    scf_opts = {'max_iter': 150, 'dispersion': dispersion}
-    if xcfun is not None:
-        scf_opts['xcfun'] = xcfun
-
-    if not has_scf_options:
-        ed.update_settings(scf_dict=scf_opts)
+    scf_opts = {'max_iter': 150}
+    if has_scf_options:
+        scf_opts['dispersion'] = dispersion
+        if xcfun is not None:
+            scf_opts['xcfun'] = xcfun
+    else:
+        # Older VeloxChem API
+        ed.update_settings(scf_dict=scf_opts, method_dict={'dispersion': dispersion})
+        if xcfun is not None:
+            ed.xcfun = xcfun
 
     if not polarizable: # Strip polarization from the pot file. 
         import os

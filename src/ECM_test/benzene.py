@@ -90,6 +90,9 @@ def benzene(
     )
     qm_ids = qm_ids_dict['data']
 
+    # NOTE: Daft - Unwrap molecules split across periodic boundaries  
+    minimum_image_unwrap(pdb_file)
+
     defect_dict = del_atoms_pdb( # Removes unassigned atoms. 
         filename=pdb_file,
         output_filename=defect_pdb_file,
@@ -154,7 +157,7 @@ if __name__ == '__main__':
             target_size=50, 
             target_shape='sc',
             pe_cutoff=16, 
-            dispersion=False, 
+            dispersion=True, 
             polarizable=False, 
             xc_functional='B3LYP', 
             debug=True

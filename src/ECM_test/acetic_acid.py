@@ -114,6 +114,8 @@ def acetic_acid(
     )
     qm_ids = qm_ids_dict['data']
 
+    # Unwrap molecules split across periodic boundaries
+    minimum_image_unwrap(pdb_file)
 
     defect_dict = del_atoms_pdb(      
         filename=pdb_file,
